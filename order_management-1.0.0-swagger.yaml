@@ -1,0 +1,210 @@
+swagger: '2.0'
+info:
+  description: This is a simple API
+  version: 1.0.0
+  title: Simple Order API
+  # put the contact info for your development or API team
+  contact:
+    email: you@your-company.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: Shipping
+  description: Shipping Team
+- name: Purchase
+  description: Purchase Team
+- name: Order
+  description: Order Team (my team)
+
+paths:
+  /order/{order_id}:
+    get:
+      tags:
+        - Order
+      summary: Get order info
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: order_id
+        type: integer
+        required: true
+      responses:
+        200:
+          description: Order found
+          schema:
+            $ref: '#/definitions/Order'
+        400:
+          description: Invalid order
+          
+    post:
+      tags:
+        - Order
+      summary: Create new order 
+      description: Add order 
+      parameters:
+      - in: path
+        name: order_id
+        type: integer
+        required: true
+      responses:
+        200:
+          description: Order created
+    
+    patch:
+      tags:
+        - Order
+      summary: Edit product in order
+      description: get product id and edit that product
+      parameters:
+      - in: path
+        name: order_id
+        type: integer
+        required: true
+      - in: query
+        name: product_id
+        type: integer
+        required: true
+      - in: query
+        name: amount
+        type: integer
+        required: true
+      responses:
+        200:
+          description: Product in basket edited.
+    
+  /order/add/{user_id}:
+    put:
+      tags:
+        - Purchase
+      summary: Add product to order
+      description: Add product to order
+      parameters:
+      - in: path
+        name: user_id
+        type: integer
+        required: true
+      - in: query
+        name: product_id
+        type: integer
+        required: true
+      - in: query
+        name: amount
+        type: integer
+        required: true
+      responses:
+        200:
+          description: product added to order
+  
+  /order/cart/{cart_id}:
+    get:
+      tags:
+        - Shipping
+        - Purchase
+      summary: Get all order in cart
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cart_id
+        type: integer
+        required: true
+      responses:
+        200:
+          description: Cart found
+          schema:
+            $ref: '#/definitions/All'
+        400:
+          description: Invalid cart
+    
+      
+definitions:
+  Order:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      Date:
+        type: string
+        example: 30-01-2020
+      Shop:
+        type: array
+        items:
+          $ref: '#/definitions/Shop'
+  Product:
+    description: product with amount and total price binded.
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      amount:
+        type: integer
+        example: 2
+      total:
+        type: integer
+        example: 2
+  Shop:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      Name:
+        type: string
+        example: "Shopzzzz"
+      product:
+        type: array
+        items:
+          $ref: '#/definitions/Product'
+  
+  All:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      Name:
+        type: string
+        example: "Shopzzzz"
+      Address:
+        type: string
+        example: "Shopzzzz"
+      Order:
+        type: array
+        items:
+          $ref: '#/definitions/Order'
+      Shipping:
+        type: string
+        enum:
+        - "Thailand Post"
+        - "Flash Express"
+        - "Kerry"
+        - "DHL"
+        - "J&T Express"
+      promotion_id:
+        type: integer
+        format: int64
+      Payment:
+        type: string
+        enum:
+        - "Credit/Debit"
+        - "Paypal"
+      PayShipping:
+        type: integer
+        format: int64
+        example: 60
+      Total price:
+        type: integer
+        format: int64
+        example: 230
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /SOP_2020/Shop_order_management/1.0.0
+schemes:
+ - https
