@@ -1,0 +1,173 @@
+swagger: '2.0'
+info:
+  description: Order Management
+  version: 1.0.1
+  title: Order Management
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: Cart
+  description: ข้อมูลตัวตะกร้าสินค้า
+paths:
+  /order/:
+    post:
+      tags:
+          - Cart
+      summary: ใส่สินค้าลงตะกร้า
+      description: ใส่สินค้าลงตะกร้า
+      responses:
+        200:
+          description: OK
+    
+  /order/{cart_id}:
+    get:
+      tags:
+        - Cart
+      summary: ดูสินค้าในตะกร้า
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cart_id
+        type: integer
+        required: true
+      responses:
+        200:
+          description: Order found
+          schema:
+            $ref: '#/definitions/Cart'
+        400:
+          description: Invalid order
+  /order/product/{orderid}:
+    post:
+      tags:
+        - Cart
+      summary: เพิ่มสินค้าในออเดอร์
+      description: ใส่เพิ่มเติม
+      parameters:
+      - in: path
+        name: orderid
+        type: integer
+        required: true
+      responses:
+        200:
+          description: OK
+    patch:
+      tags:
+        - Cart
+      summary: แก้ไขข้อมูลสินค้า
+      description: ใส่เพิ่มเติม
+      parameters:
+      - in: path
+        name: orderid
+        type: integer
+        required: true
+      responses:
+        200:
+          description: OK
+  /order/product/{orderid}/{productid}:
+    delete:
+      tags:
+        - Cart
+      summary: ลบสินค้า
+      description: ใส่เพิ่ม
+      parameters:
+      - in: path
+        name: orderid
+        type: integer
+        required: true
+        description: ใส่เพิ่ม
+      - in: path
+        name: productid
+        type: integer
+        required: true
+        description: ใส่เพิ่ม
+      responses:
+        200:
+          description: OK
+    
+  /order/user/{user_id}:
+    get:
+      tags:
+          - Cart
+      summary: ดูประวัติสั่งซื้อของ user 
+      description: ดูประวัติสั่งซื้อของ
+      parameters:
+      - in: path
+        name: user_id
+        type: integer
+        required: true
+        description: ใส่เพิ
+      responses:
+        200:
+          description: OK
+    
+      
+definitions:
+  Stock:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 1
+      Name :
+        type: string
+        example: ช้อน
+      imageUrl :
+        type: string
+        example: www.google.com
+      weight:
+        type: integer
+        format: int64
+        example: 30
+      price:
+        type: integer
+        format: int64
+        example: 150
+      amount:
+        type: integer
+        format: int64
+        example: 150
+      shopID:
+        type: integer
+        format: int64
+        example: 2
+  User:
+    description: User
+    properties:
+      id:
+        type: integer
+        format: int64
+        example: 1
+  Cart:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      user_id:
+          $ref: '#/definitions/User'
+      Date:
+        type: string
+        example: 30-01-2020
+      Product:
+        type: array
+        items:
+          $ref: '#/definitions/Stock'
+      Promotion:
+        type: string
+        example: "CODE50"
+      
+      
+  
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+# basePath: /SOP_2020/Shop_order_management/1.0.0
+schemes:
+ - https
+# Added by API Auto Mocking Plugin
+basePath: /fourthedition/Order/1.0.1
