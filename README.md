@@ -1,4 +1,4 @@
 # Order_Management
-- https://app.swaggerhub.com/apis/fourthedition/Order_Management/1.0.1
+- https://app.swaggerhub.com/apis/SOP_2020/Shop_order_management/1.0.1
 ## API
 - https://order.tungmai.me/api/
