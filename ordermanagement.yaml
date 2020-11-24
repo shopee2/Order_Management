@@ -16,11 +16,19 @@ paths:
     post:
       tags:
           - Cart
-      summary: ใส่สินค้าลงตะกร้า
-      description: ใส่สินค้าลงตะกร้า
+      summary: สร้างตระกร้าสินค้า
+      description: สร้างตระกร้าสินค้า
+      parameters:
+      - in: body
+        name: order
+        schema:
+          $ref: '#/definitions/Cart'
+        required: true
       responses:
-        200:
-          description: OK
+        201:
+          description: Cart created
+        404:
+          description: Invalid input
     
   /order/{cart_id}:
     get:
@@ -52,9 +60,16 @@ paths:
         name: orderid
         type: integer
         required: true
+      - in: body
+        name: product
+        schema:
+          $ref: '#/definitions/Stock'
+        required: true
       responses:
-        200:
-          description: OK
+        201:
+          description: Product added
+        404:
+          description: Invalid input
     patch:
       tags:
         - Cart
@@ -65,9 +80,17 @@ paths:
         name: orderid
         type: integer
         required: true
+      - in: body
+        name: product
+        schema:
+          $ref: '#/definitions/Stock'
+        required: true
       responses:
         200:
-          description: OK
+          description: Product edited
+        400:
+          description: Bad input parameter
+
   /order/product/{orderid}/{productid}:
     delete:
       tags:
@@ -88,6 +111,8 @@ paths:
       responses:
         200:
           description: OK
+        404:
+          description: Not found
     
   /order/user/{user_id}:
     get:
@@ -98,14 +123,40 @@ paths:
       parameters:
       - in: path
         name: user_id
-        type: integer
+        type: string
         required: true
-        description: ใส่เพิ
+        description: ใส่เพิ่ม
       responses:
         200:
-          description: OK
+          description: Order found
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Cart'
+        400:
+          description: Invalid order
+
+  /order/promotion/{orderid}/{promocode}:
+    patch:
+      tags:
+        - Cart
+      summary: แก้ไขโปรโมชั่น
+      description: แก้ไขโปรโมชั่น
+      parameters:
+      - in: path
+        name: orderid
+        type: integer
+        required: true
+      - in: path
+        name: promocode
+        type: string
+        required: true
+      responses:
+        200:
+          description: Promotion edited
+        400:
+          description: Bad input parameter
     
-      
 definitions:
   Stock:
     type: object
@@ -114,16 +165,6 @@ definitions:
         type: integer
         format: int64
         example: 1
-      Name :
-        type: string
-        example: ช้อน
-      imageUrl :
-        type: string
-        example: www.google.com
-      weight:
-        type: integer
-        format: int64
-        example: 30
       price:
         type: integer
         format: int64
@@ -132,17 +173,7 @@ definitions:
         type: integer
         format: int64
         example: 150
-      shopID:
-        type: integer
-        format: int64
-        example: 2
-  User:
-    description: User
-    properties:
-      id:
-        type: integer
-        format: int64
-        example: 1
+
   Cart:
     type: object
     properties:
@@ -150,7 +181,8 @@ definitions:
         type: integer
         format: int64
       user_id:
-          $ref: '#/definitions/User'
+        type: string
+        example: "nameee"
       Date:
         type: string
         example: 30-01-2020
@@ -170,4 +202,6 @@ host: virtserver.swaggerhub.com
 schemes:
  - https
 # Added by API Auto Mocking Plugin
-basePath: /fourthedition/Order/1.0.1
+# basePath: /fourthedition/Order/1.0.1
+# Added by API Auto Mocking Plugin
+basePath: /SOP_2020/Shop_order_management/1.0.1
